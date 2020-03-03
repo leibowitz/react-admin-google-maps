@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StandaloneSearchBox, Autocomplete } from '@react-google-maps/api';
+import { Autocomplete } from '@react-google-maps/api';
 
 
 export default class SearchBox extends Component {
