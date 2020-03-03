@@ -1,5 +1,5 @@
-import React, { Component, Fragment } from 'react';
-import { addField } from 'ra-core';
+import React, { Component } from 'react';
+import { LoadScript } from '@react-google-maps/api';
 import Map from './Map';
 import SearchBox from './SearchBox';
 import { getMarkers, getPosition } from './utils';
@@ -72,31 +72,26 @@ export default class GMap extends Component {
       input,
       markers: getMarkers(input),
       multipleMarkers,
-      loadingElement: <div style={{ height: '100%' }} />,
-      containerElement: <div style={{ height: '500px' }} />,
-      googleMapURL: `https://maps.googleapis.com/maps/api/js?key=${
-        googleKey
-        }&v=3.exp&libraries=geometry,drawing,places`,
     };
 
     const { center, zoom } = this.state;
 
+    const googleMapsLibraries = ['drawing', 'visualization', 'places'];
+
     return (
-      <Fragment>
+      <LoadScript
+        googleMapsApiKey={googleKey}
+        language='en'
+        region='EN'
+        version='weekly'
+        libraries={googleMapsLibraries}
+      >
         <div style={{ position: 'relative' }}>
           {!!searchable
             && (
               <SearchBox
                 putMarker={!justShow ? this.putMarkerFromSearch : () => { }}
-                deleteMarker={!justShow ? this.deleteMarker : () => { }}
                 input={input}
-                markers={getMarkers(input)}
-                multipleMarkers={multipleMarkers}
-                loadingElement={<div style={{ height: '100%' }} />}
-                containerElement={<div style={{ height: '500px' }} />}
-                googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${
-                  googleKey
-                  }&v=3.exp&libraries=geometry,drawing,places`}
               />
             )
           }
@@ -117,15 +112,15 @@ export default class GMap extends Component {
             {...childrenProps}
           />
         </div>
-      </Fragment>
+      </LoadScript>
     );
   }
 }
 
-export const GMapInput = ({ record, source, ...props }) => (
+export const GMapInput = ({ record, source, onChange, ...props }) => (
   <GMap
-    {...props}    
-    input={{ value: record[source] }}
+    {...props}
+    input={{ value: record[source], onChange: onChange }}
     searchable={true}
   />
 );

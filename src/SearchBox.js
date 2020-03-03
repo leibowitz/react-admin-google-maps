@@ -1,19 +1,27 @@
 import React, { Component } from 'react';
-import { withScriptjs } from 'react-google-maps';
-import { StandaloneSearchBox } from 'react-google-maps/lib/components/places/StandaloneSearchBox';
+import { StandaloneSearchBox, Autocomplete } from '@react-google-maps/api';
 
 
-class SearchBox extends Component {
+export default class SearchBox extends Component {
   constructor(props) {
     super(props);
     this.input = React.createRef();
 
-    this.onPlacesChanged = () => {
+    this.autocomplete = null;
+
+    this.onLoad = (autocomplete) => {
+      this.autocomplete = autocomplete;
+    };
+
+    this.onPlaceChanged = () => {
       const { input, multipleMarkers, putMarker } = this.props;
-      const places = this.input.current.getPlaces();
+      if (this.autocomplete == null) {
+        return;
+      }
+      const place = this.autocomplete.getPlace();
       const markerPos = {
-        lat: places[0].geometry.location.lat(),
-        lng: places[0].geometry.location.lng(),
+        lat: place.geometry.location.lat(),
+        lng: place.geometry.location.lng(),
       };
       putMarker({ markerPos, input, multipleMarkers });
     };
@@ -40,14 +48,15 @@ class SearchBox extends Component {
   }
 
   render() {
-    const { props, onPlacesChanged, input } = this;
+    const { props, onPlaceChanged, onLoad, input } = this;
 
     return (
       <div data-standalone-searchbox="">
-        <StandaloneSearchBox
+        <Autocomplete
           ref={input}
           bounds={props.bounds}
-          onPlacesChanged={onPlacesChanged}
+          onPlaceChanged={onPlaceChanged}
+          onLoad={onLoad}
         >
           <input
             type="text"
@@ -56,12 +65,8 @@ class SearchBox extends Component {
               ...this.defaultSearchStyles,
             }}
           />
-        </StandaloneSearchBox>
+        </Autocomplete>
       </div>
     );
   }
 }
-
-const WithScriptSearchBox = withScriptjs(props => <SearchBox {...props} />);
-
-export default WithScriptSearchBox;

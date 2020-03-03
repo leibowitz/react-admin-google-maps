@@ -1,21 +1,17 @@
 import React from 'react';
 import {
-  withGoogleMap,
-  withScriptjs,
   Marker,
   GoogleMap,
-} from 'react-google-maps';
+} from '@react-google-maps/api';
 
-const Map = withScriptjs(withGoogleMap(
-  props => {
-    const {
+const Map = ({
       center,
       onMapClick,
       onMarkerClick,
       markers,
       defaultZoom,
-    } = props;
-
+      children
+    }) => {
     const putMarkers = () => {
       if (!markers) {
         return;
@@ -42,14 +38,18 @@ const Map = withScriptjs(withGoogleMap(
 
     return (
       <GoogleMap
-        defaultZoom={defaultZoom}
+        mapContainerStyle={{
+          height: "400px",
+          width: "800px"
+        }}
+        zoom={defaultZoom}
         center={center}
         onClick={e => onMapClick(e)}
       >
         {putMarkers()}
+        {children}
       </GoogleMap>
     );
-  },
-));
+};
 
 export default Map;
