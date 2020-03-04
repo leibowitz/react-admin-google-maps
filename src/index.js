@@ -6,15 +6,16 @@ import { getMarkers, getPosition } from './utils';
 
 const googleMapsLibraries = ['drawing', 'visualization', 'places'];
 
-const GMap = ({
-  defaultZoom,
-  defaultCenter,
-  googleKey,
-  input,
-  multipleMarkers,
-  searchable,
-  justShow
-}) => {
+const GMap = props => {
+    const {
+      defaultZoom,
+      defaultCenter,
+      googleKey,
+      input,
+      multipleMarkers,
+      searchable,
+      justShow
+    } = props;
     const [center, setCenter] = useState(defaultCenter || { lat: 0, lng: 0 });
     const [zoom, setZoom] = useState(defaultZoom || 3);
 
