@@ -88,12 +88,12 @@ const GMap = props => {
             mapElement={<div style={{ height: '100%' }} />}
             center={center}
             defaultZoom={zoom}
-            onMapClick={e => this.putMarker({
+            onMapClick={e => putMarker({
               input,
               multipleMarkers,
               markerPos: getPosition(e),
             })}
-            onMarkerClick={e => this.deleteMarker({
+            onMarkerClick={e => deleteMarker({
               input,
               multipleMarkers,
               markerPos: getPosition(e),
