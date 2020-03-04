@@ -1,24 +1,19 @@
-import React, { Component } from 'react';
+import React, { useRef } from 'react';
 import { Autocomplete } from '@react-google-maps/api';
 
+const SearchBox = ({ input, multipleMarkers, putMarker, bounds }) => {
+    const inputRef = useRef();
+    const autocompleteRef = useRef(null);
 
-export default class SearchBox extends Component {
-  constructor(props) {
-    super(props);
-    this.input = React.createRef();
-
-    this.autocomplete = null;
-
-    this.onLoad = (autocomplete) => {
-      this.autocomplete = autocomplete;
+    const onLoad = (autocomplete) => {
+      autocompleteRef.current = autocomplete;
     };
 
-    this.onPlaceChanged = () => {
-      const { input, multipleMarkers, putMarker } = this.props;
-      if (this.autocomplete == null) {
+    const onPlaceChanged = () => {
+      if (autocompleteRef.current == null) {
         return;
       }
-      const place = this.autocomplete.getPlace();
+      const place = autocompleteRef.current.getPlace();
       const markerPos = {
         lat: place.geometry.location.lat(),
         lng: place.geometry.location.lng(),
@@ -26,7 +21,7 @@ export default class SearchBox extends Component {
       putMarker({ markerPos, input, multipleMarkers });
     };
 
-    this.defaultSearchStyles = {
+    const defaultSearchStyles = {
       boxSizing: 'border-box',
       border: '1px solid transparent',
       width: '240px',
@@ -45,16 +40,12 @@ export default class SearchBox extends Component {
       margin: '0 auto',
       zIndex: '1',
     };
-  }
-
-  render() {
-    const { props, onPlaceChanged, onLoad, input } = this;
 
     return (
       <div data-standalone-searchbox="">
         <Autocomplete
-          ref={input}
-          bounds={props.bounds}
+          ref={inputRef}
+          bounds={bounds}
           onPlaceChanged={onPlaceChanged}
           onLoad={onLoad}
         >
@@ -62,11 +53,12 @@ export default class SearchBox extends Component {
             type="text"
             placeholder="Search location"
             style={{
-              ...this.defaultSearchStyles,
+              ...defaultSearchStyles,
             }}
           />
         </Autocomplete>
       </div>
     );
-  }
 }
+
+export default SearchBox;

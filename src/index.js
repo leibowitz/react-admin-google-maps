@@ -1,20 +1,24 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { LoadScript } from '@react-google-maps/api';
 import Map from './Map';
 import SearchBox from './SearchBox';
 import { getMarkers, getPosition } from './utils';
 
-export default class GMap extends Component {
-  constructor(props) {
-    super(props);
-    const { defaultZoom, defaultCenter } = this.props;
+const googleMapsLibraries = ['drawing', 'visualization', 'places'];
 
-    this.state = {
-      center: defaultCenter || { lat: 0, lng: 0 },
-      zoom: defaultZoom || 3,
-    };
+const GMap = (
+  defaultZoom,
+  defaultCenter,
+  googleKey,
+  input,
+  multipleMarkers,
+  searchable,
+  justShow
+) => {
+    const [center, setCenter] = useState(defaultCenter || { lat: 0, lng: 0 });
+    const [zoom, setZoom] = useState(defaultZoom || 3);
 
-    this.putMarker = ({ markerPos, input, multipleMarkers }) => {
+    const putMarker = ({ markerPos, input, multipleMarkers }) => {
       const currentValue = getMarkers(input);
       if (multipleMarkers) {
         if (currentValue && currentValue !== null) {
@@ -25,16 +29,14 @@ export default class GMap extends Component {
       return input.onChange(markerPos);
     };
 
-    this.setCenter = markerPos => this.setState({ center: markerPos });
-
-    this.putMarkerFromSearch = ({
+    const putMarkerFromSearch = ({
       markerPos, input, justShow, multipleMarkers,
     }) => {
-      this.putMarker({ markerPos, input, multipleMarkers });
-      this.setCenter(markerPos);
+      putMarker({ markerPos, input, multipleMarkers });
+      setCenter(markerPos);
     };
 
-    this.deleteMarker = ({ markerPos, input, multipleMarkers }) => {
+    const deleteMarker = ({ markerPos, input, multipleMarkers }) => {
       const currentValue = getMarkers(input);
       let newValue;
       if (multipleMarkers) {
@@ -46,37 +48,23 @@ export default class GMap extends Component {
       } else { newValue = null; }
       input.onChange(newValue);
     };
-  }
 
-  componentDidMount() {
-    const { input } = this.props;
-    const markers = getMarkers(input);
-    if (markers) {
-      if (markers instanceof Array) {
-        this.setState({ center: markers[markers.length - 1] });
-      } else {
-        this.setState({ center: markers });
+    useEffect(() => {
+      const markers = getMarkers(input);
+      if (markers) {
+        if (markers instanceof Array) {
+          setCenter(markers[markers.length - 1]);
+        } else {
+          setCenter(markers);
+        }
       }
-    }
-  }
+    }, []);
 
-  render() {
-    const {
-      googleKey,
-      input,
-      multipleMarkers,
-      searchable,
-      justShow,
-    } = this.props;
     const childrenProps = {
       input,
       markers: getMarkers(input),
       multipleMarkers,
     };
-
-    const { center, zoom } = this.state;
-
-    const googleMapsLibraries = ['drawing', 'visualization', 'places'];
 
     return (
       <LoadScript
@@ -114,8 +102,9 @@ export default class GMap extends Component {
         </div>
       </LoadScript>
     );
-  }
-}
+};
+
+export default GMap;
 
 export const GMapInput = ({ record, source, onChange, ...props }) => (
   <GMap
