@@ -8023,9 +8023,9 @@ querystringify@^2.1.1:
   integrity sha512-w7fLxIRCRT7U8Qu53jQnJyPkYZIaR4n5151KMfcJlO/A9397Wxb1amJvROTK6TOnp7PfoAmg/qXiNHI+08jRfA==
 
 ra-core@^3.1.3:
-  version "3.2.3"
-  resolved "https://registry.yarnpkg.com/ra-core/-/ra-core-3.2.3.tgz#b59e7b68a5824a68ac4abf3929c2236fdd13d160"
-  integrity sha512-VXAjgpyuf8LEX7Xp0vmEYGM58D7vd5DVs08MNgSJI887ep0ZwYHwrRn/VP5pka1An8zN6D7AEVpmda8q2rkhpA==
+  version "3.1.3"
+  resolved "https://registry.yarnpkg.com/ra-core/-/ra-core-3.1.3.tgz#823a60018d8d6d28ccb8fdfef5d2ce8727da7be6"
+  integrity sha512-BPK6vMIEiVXq1szIi6F+Us+nniFRQuDvFKSsm0SHTa6Y24RE/YLULuklPWfPpKNssKgTv8h96xyfcebEaDfZMA==
   dependencies:
     "@testing-library/react" "^8.0.7"
     classnames "~2.2.5"
