@@ -78,7 +78,7 @@ const GMap = ({
           {!!searchable
             && (
               <SearchBox
-                putMarker={!justShow ? this.putMarkerFromSearch : () => { }}
+                putMarker={!justShow ? putMarkerFromSearch : () => { }}
                 input={input}
               />
             )
