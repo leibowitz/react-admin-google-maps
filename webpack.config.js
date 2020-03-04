@@ -38,12 +38,14 @@ module.exports = {
     react: {
       commonjs: "react",
       commonjs2: "react",
+      umd: "React",
       amd: "React",
       root: "React"
     },
     "react-dom": {
       commonjs: "react-dom",
       commonjs2: "react-dom",
+      umd: "ReactDOM",
       amd: "ReactDOM",
       root: "ReactDOM"
     }
